@@ -1,9 +1,9 @@
-﻿using eShopSolution.Data.Enums;
+﻿using demoNetCore.Data.Enums;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace eShopSolution.Data.Entities
+namespace demoNetCore.Data.Entities
 {
     public class Contact
     {
