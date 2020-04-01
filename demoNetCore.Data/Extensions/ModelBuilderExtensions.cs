@@ -1,5 +1,6 @@
 ﻿using demoNetCore.Data.Entities;
 using demoNetCore.Data.Enums;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -87,6 +88,38 @@ namespace demoNetCore.Data.Extensions
                 new ProductInCategory() { ProductId = 1, CategoryId = 1 }
             );
 
+            // any guid
+            var roleId = new Guid("AFFE005B-4610-401B-A1D8-905F7FD65005");
+            var adminId = new Guid("663777D9-501D-4AE7-B51B-2E0C45FF926B");
+            modelBuilder.Entity<AppRole>().HasData(new AppRole
+            {
+                Id = roleId,
+                Name = "admin",
+                NormalizedName = "admin",
+                Description = "Administrator role"
+            });
+
+            var hasher = new PasswordHasher<AppUser>();
+            modelBuilder.Entity<AppUser>().HasData(new AppUser
+            {
+                Id = adminId,
+                UserName = "admin",
+                NormalizedUserName = "admin",
+                Email = "trananhsd6@gmail.com",
+                NormalizedEmail = "trananhsd6@gmail.com",
+                EmailConfirmed = true,
+                PasswordHash = hasher.HashPassword(null, "abc1234$"),
+                SecurityStamp = string.Empty,
+                FirstName = "Anh",
+                LastName = "Tran",
+                DoB = new DateTime(1997, 10, 16)
+            });
+
+            modelBuilder.Entity<IdentityUserRole<Guid>>().HasData(new IdentityUserRole<Guid>
+            {
+                RoleId = roleId,
+                UserId = adminId
+            });
         }
 
     }
