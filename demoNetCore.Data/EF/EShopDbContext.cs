@@ -1,5 +1,6 @@
 ﻿using demoNetCore.Data.Configurations;
 using demoNetCore.Data.Entities;
+using demoNetCore.Data.Extensions;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,7 @@ namespace demoNetCore.Data.EF
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            //Configuration with Fluent API
             modelBuilder.ApplyConfiguration(new AppConfigConfiguration());
             modelBuilder.ApplyConfiguration(new ProductConfiguration());
             modelBuilder.ApplyConfiguration(new CategoryConfiguration());
@@ -29,7 +31,8 @@ namespace demoNetCore.Data.EF
             modelBuilder.ApplyConfiguration(new PromotionConfiguration());
             modelBuilder.ApplyConfiguration(new TransactionConfiguration());
 
-
+            //Data seeding
+            modelBuilder.Seed();
             //base.OnModelCreating(modelBuilder);
 
         }
