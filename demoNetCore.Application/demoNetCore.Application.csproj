@@ -4,4 +4,9 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\demoNetCore.Data\demoNetCore.Data.csproj" />
+    <ProjectReference Include="..\demoNetCore.Utilities\demoNetCore.Utilities.csproj" />
+  </ItemGroup>
+
 </Project>
