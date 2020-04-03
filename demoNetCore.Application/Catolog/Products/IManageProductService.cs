@@ -16,7 +16,6 @@ namespace demoNetCore.Application.Catolog.Products
         Task<bool> UpdatePrice(int productId, decimal newPrice);
         Task<bool> UpdateStock(int productId, int addedQuantity);
         Task AddViewCount(int productId);
-        Task<List<ProductViewModel>> GetAll();
         Task<PagedResult<ProductViewModel>> GetAllPaging(ProductPagingRequest request);
     }
 }

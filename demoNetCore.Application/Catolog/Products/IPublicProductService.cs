@@ -4,11 +4,12 @@ using demoNetCore.Application.Dtos;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace demoNetCore.Application.Catolog.Products
 {
     public interface IPublicProductService
     {
-        PagedResult<ProductViewModel> GetAllByCategoryId(ProductPagingRequest request);
+        Task<PagedResult<ProductViewModel>> GetAllByCategoryId(ProductPagingRequest request);
     }
 }

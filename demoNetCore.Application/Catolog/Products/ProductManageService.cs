@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace demoNetCore.Application.Catolog.Products
 {
-    public class ProductManageService:IManageProductService
+    public class ProductManageService : IManageProductService
     {
         private readonly EShopDbContext _context;
         public ProductManageService(EShopDbContext context)
@@ -35,7 +35,7 @@ namespace demoNetCore.Application.Catolog.Products
                 Price = request.Price,
                 OriginalPrice = request.OriginalPrice,
                 Stock = request.Stock,
-                ViewCount =0,
+                ViewCount = 0,
                 DateCreated = DateTime.Now,
                 ProductTranslations = new List<ProductTranslation>()
                 {
@@ -52,7 +52,7 @@ namespace demoNetCore.Application.Catolog.Products
                 }
             };
             _context.Products.Add(product);
-            return await _context.SaveChangesAsync(); 
+            return await _context.SaveChangesAsync();
         }
 
         public async Task<int> Delete(int productID)
@@ -66,20 +66,15 @@ namespace demoNetCore.Application.Catolog.Products
             return await _context.SaveChangesAsync();
         }
 
-        public Task<List<ProductViewModel>> GetAll()
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<PagedResult<ProductViewModel>> GetAllPaging(ProductPagingRequest request)
         {
             var query = from p in _context.Products
                         join pt in _context.ProductTranslations on p.Id equals pt.ProductId
                         join pic in _context.ProductInCategories on p.Id equals pic.ProductId
                         join c in _context.Categories on pic.CategoryId equals c.Id
-                        select new { p, pt,pic};
-            
-            
+                        select new { p, pt, pic };
+
+
             if (!string.IsNullOrEmpty(request.Keyword))
             {
                 query = query.Where(x => x.pt.Name.Contains(request.Keyword));
@@ -92,23 +87,23 @@ namespace demoNetCore.Application.Catolog.Products
 
             int totalRow = await query.CountAsync();
 
-            var data = await query.Skip((request.PageIndex - 1)*request.PageSize).Take(request.PageSize).Select(n =>
-                new ProductViewModel()
-                {
-                    Id = n.p.Id,
-                    Name = n.pt.Name,
-                    DateCreated = n.p.DateCreated,
-                    Description = n.pt.Description,
-                    Details = n.pt.Details,
-                    LanguageId = n.pt.LanguageId,
-                    OriginalPrice = n.p.OriginalPrice,
-                    Price = n.p.Price,
-                    SeoAlias = n.pt.SeoAlias,
-                    SeoDescription = n.pt.SeoDescription,
-                    SeoTitle = n.pt.SeoTitle,
-                    Stock = n.p.Stock,
-                    ViewCount = n.p.ViewCount
-                }
+            var data = await query.Skip((request.PageIndex - 1) * request.PageSize).Take(request.PageSize).Select(n =>
+                  new ProductViewModel()
+                  {
+                      Id = n.p.Id,
+                      Name = n.pt.Name,
+                      DateCreated = n.p.DateCreated,
+                      Description = n.pt.Description,
+                      Details = n.pt.Details,
+                      LanguageId = n.pt.LanguageId,
+                      OriginalPrice = n.p.OriginalPrice,
+                      Price = n.p.Price,
+                      SeoAlias = n.pt.SeoAlias,
+                      SeoDescription = n.pt.SeoDescription,
+                      SeoTitle = n.pt.SeoTitle,
+                      Stock = n.p.Stock,
+                      ViewCount = n.p.ViewCount
+                  }
             ).ToListAsync();
 
             var pagedResult = new PagedResult<ProductViewModel>()
@@ -121,17 +116,37 @@ namespace demoNetCore.Application.Catolog.Products
 
         public async Task<int> Update(ProductUpdateRequest request)
         {
-            throw new NotImplementedException();
+            var product = await _context.Products.FindAsync(request.Id);
+            var productTranslations = await _context.ProductTranslations.FirstOrDefaultAsync(n => n.ProductId == request.Id
+            && n.LanguageId == request.LanguageId);
+            if (product == null || productTranslations == null) throw new demoNetCoreException($"Cannot find a product:{request.Id}");
+
+            productTranslations.Name = request.Name;
+            productTranslations.SeoAlias = request.SeoAlias;
+            productTranslations.SeoTitle = request.SeoTitle;
+            productTranslations.SeoDescription = request.SeoDescription;
+            productTranslations.Description = request.Description;
+            productTranslations.Details = request.Details;
+
+            return await _context.SaveChangesAsync();
         }
 
-        public Task<bool> UpdatePrice(int productId, decimal newPrice)
+        public async Task<bool> UpdatePrice(int productId, decimal newPrice)
         {
-            throw new NotImplementedException();
+            var product = await _context.Products.FindAsync(productId);
+            if (product == null) throw new demoNetCoreException($"Cannot find a product:{productId}");
+
+            product.Price = newPrice;
+            return await _context.SaveChangesAsync() > 0;
         }
 
-        public Task<bool> UpdateStock(int productId, int addedQuantity)
+        public async Task<bool> UpdateStock(int productId, int addedQuantity)
         {
-            throw new NotImplementedException();
+            var product = await _context.Products.FindAsync(productId);
+            if (product == null) throw new demoNetCoreException($"Cannot find a product:{productId}");
+
+            product.Stock += addedQuantity;
+            return await _context.SaveChangesAsync() > 0;
         }
     }
 }
