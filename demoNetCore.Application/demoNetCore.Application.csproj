@@ -1,12 +1,17 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App"/>
+  </ItemGroup>
+  
+  <ItemGroup>
     <ProjectReference Include="..\demoNetCore.Data\demoNetCore.Data.csproj" />
     <ProjectReference Include="..\demoNetCore.Utilities\demoNetCore.Utilities.csproj" />
+    <ProjectReference Include="..\demoNetCore.ViewModel\demoNetCore.ViewModel.csproj" />
   </ItemGroup>
 
 </Project>

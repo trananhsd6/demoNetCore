@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace demoNetCore.Application.Dtos
+namespace demoNetCore.ViewModel.Common
 {
     public class PagedResult<T>
     {

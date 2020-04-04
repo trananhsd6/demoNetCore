@@ -1,13 +1,17 @@
-﻿using demoNetCore.Application.Catolog.Products.Dtos;
-using demoNetCore.Application.Catolog.Products.Dtos.Manage;
-using demoNetCore.Application.Dtos;
+﻿using demoNetCore.Application.Common;
 using demoNetCore.Data.EF;
 using demoNetCore.Data.Entities;
 using demoNetCore.Utilities.Exceptions;
+using demoNetCore.ViewModel.Catalog.Products;
+using demoNetCore.ViewModel.Catalog.Products.Manage;
+using demoNetCore.ViewModel.Common;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -16,9 +20,16 @@ namespace demoNetCore.Application.Catolog.Products
     public class ProductManageService : IManageProductService
     {
         private readonly EShopDbContext _context;
-        public ProductManageService(EShopDbContext context)
+        private readonly IStorageService _storageService;
+        public ProductManageService(EShopDbContext context,IStorageService storageService)
         {
             _context = context;
+            _storageService = storageService;
+        }
+
+        public Task<int> AddImages(int productId, List<IFormFile> files)
+        {
+            throw new NotImplementedException();
         }
 
         public async Task AddViewCount(int productId)
@@ -51,6 +62,23 @@ namespace demoNetCore.Application.Catolog.Products
                     }
                 }
             };
+
+            //Save Image
+            if (request.ThumbnailImage != null)
+            {
+                product.ProductImages = new List<ProductImage>()
+                {
+                   new ProductImage()
+                   {
+                       Caption= "Thumbnail image",
+                       DateCreated = DateTime.Now,
+                       FileSize = request.ThumbnailImage.Length,
+                       ImagePath = await this.SaveFile(request.ThumbnailImage),
+                       SortOrder = 1
+                   }
+                };
+            }
+
             _context.Products.Add(product);
             return await _context.SaveChangesAsync();
         }
@@ -62,6 +90,12 @@ namespace demoNetCore.Application.Catolog.Products
             {
                 throw new demoNetCoreException($"Cannot find a product:{productID}");
             }
+            var images = _context.ProductImages.Where(i=>i.ProductId == productID);
+            foreach (var item in images)
+            {
+                await _storageService.DeleteFileAsync(item.ImagePath);
+            }
+           
             _context.Products.Remove(product);
             return await _context.SaveChangesAsync();
         }
@@ -114,6 +148,30 @@ namespace demoNetCore.Application.Catolog.Products
             return pagedResult;
         }
 
+        public async Task<List<ProductImageViewMode>> GetListImage(int productId)
+        {
+            var images = _context.ProductImages.Where(i => i.ProductId == productId).Select(n=> new ProductImageViewMode
+            { 
+                Id = n.Id,
+                FilePath = n.ImagePath,
+                FileSizes = n.FileSize,
+                isDefault = n.IsDefault
+            });
+            return await images.ToListAsync();
+        }
+
+        public async Task<int> RemoveImages(int imageId)
+        {
+            var thumbnailImage = await _context.ProductImages.FindAsync(imageId);
+            if (thumbnailImage == null)
+            {
+                throw new demoNetCoreException($"Cannot find a ThubnailImages:{imageId}");
+            }
+            _context.Remove(thumbnailImage);
+
+            return await _context.SaveChangesAsync();
+        }
+
         public async Task<int> Update(ProductUpdateRequest request)
         {
             var product = await _context.Products.FindAsync(request.Id);
@@ -128,7 +186,23 @@ namespace demoNetCore.Application.Catolog.Products
             productTranslations.Description = request.Description;
             productTranslations.Details = request.Details;
 
+            //Update Image
+            if (request.ThumbnailImage != null)
+            {
+                var thumbnailImage = await _context.ProductImages.FirstOrDefaultAsync(i=>i.IsDefault == true && i.ProductId == request.Id);
+                if (thumbnailImage != null)
+                {
+                    thumbnailImage.FileSize = request.ThumbnailImage.Length;
+                    thumbnailImage.ImagePath = await this.SaveFile(request.ThumbnailImage);
+                    _context.ProductImages.Update(thumbnailImage);
+                }
+            }
             return await _context.SaveChangesAsync();
+        }
+
+        public Task<int> UpdateImages(int imageId, string caption, bool isDefault)
+        {
+            throw new NotImplementedException();
         }
 
         public async Task<bool> UpdatePrice(int productId, decimal newPrice)
@@ -147,6 +221,14 @@ namespace demoNetCore.Application.Catolog.Products
 
             product.Stock += addedQuantity;
             return await _context.SaveChangesAsync() > 0;
+        }
+
+        private async Task<string> SaveFile(IFormFile file)
+        {
+            var originalFilename = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName;
+            var filename = $"{Guid.NewGuid()}{Path.GetExtension(originalFilename)}";
+            await _storageService.SaveFileAsync(file.OpenReadStream(),filename);
+            return filename;
         }
     }
 }

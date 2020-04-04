@@ -1,6 +1,6 @@
-﻿using demoNetCore.Application.Catolog.Products.Dtos;
-using demoNetCore.Application.Catolog.Products.Dtos.Public;
-using demoNetCore.Application.Dtos;
+﻿using demoNetCore.ViewModel.Catalog.Products;
+using demoNetCore.ViewModel.Catalog.Products.Public;
+using demoNetCore.ViewModel.Common;
 using System;
 using System.Collections.Generic;
 using System.Text;

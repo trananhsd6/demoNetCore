@@ -1,13 +1,13 @@
-﻿using demoNetCore.Application.Catolog.Products.Dtos;
-using demoNetCore.Application.Catolog.Products.Dtos.Public;
-using demoNetCore.Application.Dtos;
-using demoNetCore.Data.EF;
+﻿using demoNetCore.Data.EF;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using demoNetCore.ViewModel.Catalog.Products;
+using demoNetCore.ViewModel.Common;
+using demoNetCore.ViewModel.Catalog.Products.Public;
 
 namespace demoNetCore.Application.Catolog.Products
 {
