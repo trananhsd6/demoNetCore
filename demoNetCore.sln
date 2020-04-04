@@ -3,11 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29806.167
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "demoNetCoreDemo", "demoNetCoreDemo\demoNetCoreDemo.csproj", "{75F443B9-BF0D-4AD6-8F85-F11292BA6386}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "demoNetCoreDemo", "demoNetCoreDemo\demoNetCoreDemo.csproj", "{75F443B9-BF0D-4AD6-8F85-F11292BA6386}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "demoNetCore.Data", "demoNetCore.Data\demoNetCore.Data.csproj", "{A2AAFD3D-AFC4-4DBE-A223-E5079B18BEA3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "demoNetCore.Data", "demoNetCore.Data\demoNetCore.Data.csproj", "{A2AAFD3D-AFC4-4DBE-A223-E5079B18BEA3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "demoNetCore.Application", "demoNetCore.Application\demoNetCore.Application.csproj", "{75D4940D-9C2E-4B0A-B3C1-820CA239248C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "demoNetCore.Application", "demoNetCore.Application\demoNetCore.Application.csproj", "{75D4940D-9C2E-4B0A-B3C1-820CA239248C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "demoNetCore.Utilities", "demoNetCore.Utilities\demoNetCore.Utilities.csproj", "{031F5BD8-1177-44B9-9DB6-5F19AA5FD751}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "demoNetCore.ViewModel", "demoNetCore.ViewModel\demoNetCore.ViewModel.csproj", "{6BC7B238-6E1B-405E-8D47-74D7783B77A8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "demoNetCore.BackendApi", "demoNetCore.BackendApi\demoNetCore.BackendApi.csproj", "{5B9EEF7B-0310-4993-94FC-DBA1A48E0D36}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +33,18 @@ Global
 		{75D4940D-9C2E-4B0A-B3C1-820CA239248C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{75D4940D-9C2E-4B0A-B3C1-820CA239248C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{75D4940D-9C2E-4B0A-B3C1-820CA239248C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{031F5BD8-1177-44B9-9DB6-5F19AA5FD751}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{031F5BD8-1177-44B9-9DB6-5F19AA5FD751}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{031F5BD8-1177-44B9-9DB6-5F19AA5FD751}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{031F5BD8-1177-44B9-9DB6-5F19AA5FD751}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6BC7B238-6E1B-405E-8D47-74D7783B77A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6BC7B238-6E1B-405E-8D47-74D7783B77A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6BC7B238-6E1B-405E-8D47-74D7783B77A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6BC7B238-6E1B-405E-8D47-74D7783B77A8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5B9EEF7B-0310-4993-94FC-DBA1A48E0D36}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5B9EEF7B-0310-4993-94FC-DBA1A48E0D36}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5B9EEF7B-0310-4993-94FC-DBA1A48E0D36}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5B9EEF7B-0310-4993-94FC-DBA1A48E0D36}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

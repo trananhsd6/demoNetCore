@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using demoNetCore.Data.EF;
 
 namespace demoNetCore.Data.Migrations
 {
     [DbContext(typeof(EShopDbContext))]
-    partial class EShopDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200403182757_AlterColFileSizeOfProductImageTable")]
+    partial class AlterColFileSizeOfProductImageTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -177,7 +179,7 @@ namespace demoNetCore.Data.Migrations
                         new
                         {
                             Id = new Guid("affe005b-4610-401b-a1d8-905f7fd65005"),
-                            ConcurrencyStamp = "65d7ab80-b923-4182-b488-18553e34aebd",
+                            ConcurrencyStamp = "8eb94c43-aa04-4a1a-9b66-3b20ede52151",
                             Description = "Administrator role",
                             Name = "admin",
                             NormalizedName = "admin"
@@ -254,7 +256,7 @@ namespace demoNetCore.Data.Migrations
                         {
                             Id = new Guid("663777d9-501d-4ae7-b51b-2e0c45ff926b"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "3951f3ee-8c70-4544-9540-40225dd5208b",
+                            ConcurrencyStamp = "0ace0c48-e136-4c29-b990-923eb3b2f116",
                             DoB = new DateTime(1997, 10, 16, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "trananhsd6@gmail.com",
                             EmailConfirmed = true,
@@ -263,7 +265,7 @@ namespace demoNetCore.Data.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "trananhsd6@gmail.com",
                             NormalizedUserName = "admin",
-                            PasswordHash = "AQAAAAEAACcQAAAAEKVQQsE/iDjlo0xZ4DqF89fx0fUQ/SMkUyxJAGH1tkM081DhITt2e9Gmjn/D4YHoIQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEOd0kcdiOc+2TcAHYqvYnQ/CwOXzLzGbSV5SLzbGChAsD/VBGcPGBKk+MzEnwrnzfQ==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
@@ -598,7 +600,7 @@ namespace demoNetCore.Data.Migrations
                         new
                         {
                             Id = 1,
-                            DateCreated = new DateTime(2020, 4, 4, 1, 31, 34, 942, DateTimeKind.Local).AddTicks(3914),
+                            DateCreated = new DateTime(2020, 4, 4, 1, 27, 56, 900, DateTimeKind.Local).AddTicks(2931),
                             OriginalPrice = 100000m,
                             Price = 200000m,
                             Stock = 0,
@@ -618,8 +620,8 @@ namespace demoNetCore.Data.Migrations
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<long>("FileSize")
-                        .HasColumnType("bigint");
+                    b.Property<int>("FileSize")
+                        .HasColumnType("int");
 
                     b.Property<string>("ImagePath")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
