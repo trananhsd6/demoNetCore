@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace demoNetCore.ViewModel.Catalog.Products.Manage
+namespace demoNetCore.ViewModel.Catalog.Products
 {
     public class ProductCreateRequest
     {

@@ -3,7 +3,6 @@ using demoNetCore.Data.EF;
 using demoNetCore.Data.Entities;
 using demoNetCore.Utilities.Exceptions;
 using demoNetCore.ViewModel.Catalog.Products;
-using demoNetCore.ViewModel.Catalog.Products.Manage;
 using demoNetCore.ViewModel.Common;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -100,7 +99,7 @@ namespace demoNetCore.Application.Catolog.Products
             return await _context.SaveChangesAsync();
         }
 
-        public async Task<PagedResult<ProductViewModel>> GetAllPaging(ProductPagingRequest request)
+        public async Task<PagedResult<ProductViewModel>> GetAllPaging(ManageProductPagingRequest request)
         {
             var query = from p in _context.Products
                         join pt in _context.ProductTranslations on p.Id equals pt.ProductId

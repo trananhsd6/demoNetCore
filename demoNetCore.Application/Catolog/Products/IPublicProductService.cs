@@ -1,5 +1,4 @@
 ﻿using demoNetCore.ViewModel.Catalog.Products;
-using demoNetCore.ViewModel.Catalog.Products.Public;
 using demoNetCore.ViewModel.Common;
 using System;
 using System.Collections.Generic;
@@ -10,6 +9,7 @@ namespace demoNetCore.Application.Catolog.Products
 {
     public interface IPublicProductService
     {
-        Task<PagedResult<ProductViewModel>> GetAllByCategoryId(ProductPagingRequest request);
+        Task<PagedResult<ProductViewModel>> GetAllByCategoryId(PublicProductPagingRequest request);
+        Task<List<ProductViewModel>> GetAll();
     }
 }

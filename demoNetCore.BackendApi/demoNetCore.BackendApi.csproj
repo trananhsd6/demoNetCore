@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.3" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\demoNetCore.Application\demoNetCore.Application.csproj" />
+    <ProjectReference Include="..\demoNetCore.Data\demoNetCore.Data.csproj" />
+    <ProjectReference Include="..\demoNetCore.Utilities\demoNetCore.Utilities.csproj" />
+    <ProjectReference Include="..\demoNetCore.ViewModel\demoNetCore.ViewModel.csproj" />
+  </ItemGroup>
+
+
+
+</Project>

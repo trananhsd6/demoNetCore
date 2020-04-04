@@ -3,9 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace demoNetCore.ViewModel.Catalog.Products.Public
+namespace demoNetCore.ViewModel.Catalog.Products
 {
-    public class ProductPagingRequest : PagingRequestBase
+    public class PublicProductPagingRequest : PagingRequestBase
     {
         public int? CategoryId { get; set; }
     }

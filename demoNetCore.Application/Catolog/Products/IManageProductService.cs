@@ -1,5 +1,4 @@
 ﻿using demoNetCore.ViewModel.Catalog.Products;
-using demoNetCore.ViewModel.Catalog.Products.Manage;
 using demoNetCore.ViewModel.Common;
 using Microsoft.AspNetCore.Http;
 using System;
@@ -17,7 +16,7 @@ namespace demoNetCore.Application.Catolog.Products
         Task<bool> UpdatePrice(int productId, decimal newPrice);
         Task<bool> UpdateStock(int productId, int addedQuantity);
         Task AddViewCount(int productId);
-        Task<PagedResult<ProductViewModel>> GetAllPaging(ProductPagingRequest request);
+        Task<PagedResult<ProductViewModel>> GetAllPaging(ManageProductPagingRequest request);
         Task<int> AddImages(int productId, List<IFormFile> files);
         Task<int> RemoveImages(int imageId);
         Task<int> UpdateImages(int imageId, string caption,bool isDefault);
