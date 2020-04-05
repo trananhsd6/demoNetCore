@@ -13,7 +13,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "demoNetCore.Utilities", "de
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "demoNetCore.ViewModel", "demoNetCore.ViewModel\demoNetCore.ViewModel.csproj", "{6BC7B238-6E1B-405E-8D47-74D7783B77A8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "demoNetCore.BackendApi", "demoNetCore.BackendApi\demoNetCore.BackendApi.csproj", "{5B9EEF7B-0310-4993-94FC-DBA1A48E0D36}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "demoNetCore.BackendApi", "demoNetCore.BackendApi\demoNetCore.BackendApi.csproj", "{5B9EEF7B-0310-4993-94FC-DBA1A48E0D36}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1.Infrastructure", "1.Infrastructure", "{53E0E956-D331-4817-B765-24EB306F0C8B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2.Domain", "2.Domain", "{306F2062-2FA6-48E7-9DF3-3557F634E422}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3.Hosts", "3.Hosts", "{B0943495-455A-4EB0-8E64-FA21D0971802}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -48,6 +54,14 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{75F443B9-BF0D-4AD6-8F85-F11292BA6386} = {B0943495-455A-4EB0-8E64-FA21D0971802}
+		{A2AAFD3D-AFC4-4DBE-A223-E5079B18BEA3} = {306F2062-2FA6-48E7-9DF3-3557F634E422}
+		{75D4940D-9C2E-4B0A-B3C1-820CA239248C} = {306F2062-2FA6-48E7-9DF3-3557F634E422}
+		{031F5BD8-1177-44B9-9DB6-5F19AA5FD751} = {53E0E956-D331-4817-B765-24EB306F0C8B}
+		{6BC7B238-6E1B-405E-8D47-74D7783B77A8} = {53E0E956-D331-4817-B765-24EB306F0C8B}
+		{5B9EEF7B-0310-4993-94FC-DBA1A48E0D36} = {B0943495-455A-4EB0-8E64-FA21D0971802}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3A3F097A-4CA5-4185-B48E-617535D02E94}
