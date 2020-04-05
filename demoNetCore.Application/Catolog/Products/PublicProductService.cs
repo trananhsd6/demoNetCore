@@ -18,15 +18,14 @@ namespace demoNetCore.Application.Catolog.Products
             _context = context;
         }
 
-        public async Task<List<ProductViewModel>> GetAll()
+        public async Task<List<ProductViewModel>> GetAll(string languageId)
         {
             var query = from p in _context.Products
                         join pt in _context.ProductTranslations on p.Id equals pt.ProductId
                         join pic in _context.ProductInCategories on p.Id equals pic.ProductId
                         join c in _context.Categories on pic.CategoryId equals c.Id
+                        where pt.LanguageId == languageId
                         select new { p, pt, pic };
-
-            int totalRow = await query.CountAsync();
 
             var data = await query.Select(n =>
                   new ProductViewModel()
@@ -55,6 +54,7 @@ namespace demoNetCore.Application.Catolog.Products
                         join pt in _context.ProductTranslations on p.Id equals pt.ProductId
                         join pic in _context.ProductInCategories on p.Id equals pic.ProductId
                         join c in _context.Categories on pic.CategoryId equals c.Id
+                        where pt.LanguageId == request.LanguageId
                         select new { p, pt, pic };
 
 

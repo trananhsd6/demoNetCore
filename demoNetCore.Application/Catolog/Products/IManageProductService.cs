@@ -15,6 +15,7 @@ namespace demoNetCore.Application.Catolog.Products
         Task<int> Delete(int productID);
         Task<bool> UpdatePrice(int productId, decimal newPrice);
         Task<bool> UpdateStock(int productId, int addedQuantity);
+        Task<ProductViewModel> GetById(int productId,string languageId);
         Task AddViewCount(int productId);
         Task<PagedResult<ProductViewModel>> GetAllPaging(ManageProductPagingRequest request);
         Task<int> AddImages(int productId, List<IFormFile> files);
