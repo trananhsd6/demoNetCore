@@ -8,5 +8,6 @@ namespace demoNetCore.ViewModel.Catalog.Products
     public class PublicProductPagingRequest : PagingRequestBase
     {
         public int? CategoryId { get; set; }
+        public string LanguageId { get; set; }
     }
 }

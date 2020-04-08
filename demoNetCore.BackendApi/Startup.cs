@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using demoNetCore.Application.Catolog.Products;
+using demoNetCore.Application.Common;
 using demoNetCore.Data.EF;
 using demoNetCore.Utilities.Constants;
 using Microsoft.AspNetCore.Builder;
@@ -32,7 +33,10 @@ namespace demoNetCore.BackendApi
                 options.UseMySql(Configuration.GetConnectionString(SystemConstants.MainConnectionString)));
 
             //Declare DI
+            services.AddTransient<IStorageService, FileStorageService>();
+
             services.AddTransient<IPublicProductService, PublicProductService>();
+            services.AddTransient<IManageProductService, ProductManageService>();
 
             services.AddControllersWithViews();
 

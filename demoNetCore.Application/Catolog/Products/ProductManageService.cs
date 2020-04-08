@@ -79,7 +79,8 @@ namespace demoNetCore.Application.Catolog.Products
             }
 
             _context.Products.Add(product);
-            return await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
+            return product.Id;
         }
 
         public async Task<int> Delete(int productID)
@@ -145,6 +146,29 @@ namespace demoNetCore.Application.Catolog.Products
                 Items = data
             };
             return pagedResult;
+        }
+
+        public async Task<ProductViewModel> GetById(int productId, string languageId)
+        {
+            var product = await _context.Products.FindAsync(productId);
+            var productTranslation = await _context.ProductTranslations.FirstOrDefaultAsync(x => x.ProductId == productId && x.LanguageId == languageId);
+            ProductViewModel productViewModel = new ProductViewModel()
+            {
+                Id = product.Id,
+                DateCreated = product.DateCreated,
+                Description = productTranslation != null ? productTranslation.Description : null,
+                LanguageId = productTranslation != null ? productTranslation.LanguageId : null,
+                Details = productTranslation != null ? productTranslation.Details : null,
+                Name = productTranslation != null ? productTranslation.Name : null,
+                OriginalPrice = product.OriginalPrice,
+                Price = product.Price,
+                SeoAlias = productTranslation != null ? productTranslation.SeoAlias : null,
+                SeoDescription = productTranslation != null ? productTranslation.SeoDescription : null,
+                SeoTitle = productTranslation != null ? productTranslation.SeoTitle : null,
+                Stock = product.Stock,
+                ViewCount = product.ViewCount
+            };
+            return productViewModel;
         }
 
         public async Task<List<ProductImageViewMode>> GetListImage(int productId)
@@ -224,7 +248,7 @@ namespace demoNetCore.Application.Catolog.Products
 
         private async Task<string> SaveFile(IFormFile file)
         {
-            var originalFilename = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName;
+            var originalFilename = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
             var filename = $"{Guid.NewGuid()}{Path.GetExtension(originalFilename)}";
             await _storageService.SaveFileAsync(file.OpenReadStream(),filename);
             return filename;
