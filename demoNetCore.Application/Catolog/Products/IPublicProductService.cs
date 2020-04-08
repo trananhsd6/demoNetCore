@@ -9,7 +9,6 @@ namespace demoNetCore.Application.Catolog.Products
 {
     public interface IPublicProductService
     {
-        Task<PagedResult<ProductViewModel>> GetAllByCategoryId(PublicProductPagingRequest request);
-        Task<List<ProductViewModel>> GetAll(string languageId);
+        Task<PagedResult<ProductViewModel>> GetAllByCategoryId(string languageId,PublicProductPagingRequest request);
     }
 }

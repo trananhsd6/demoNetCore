@@ -18,43 +18,15 @@ namespace demoNetCore.Application.Catolog.Products
             _context = context;
         }
 
-        public async Task<List<ProductViewModel>> GetAll(string languageId)
+       
+
+        public async Task<PagedResult<ProductViewModel>> GetAllByCategoryId(string languageId,PublicProductPagingRequest request)
         {
             var query = from p in _context.Products
                         join pt in _context.ProductTranslations on p.Id equals pt.ProductId
                         join pic in _context.ProductInCategories on p.Id equals pic.ProductId
                         join c in _context.Categories on pic.CategoryId equals c.Id
                         where pt.LanguageId == languageId
-                        select new { p, pt, pic };
-
-            var data = await query.Select(n =>
-                  new ProductViewModel()
-                  {
-                      Id = n.p.Id,
-                      Name = n.pt.Name,
-                      DateCreated = n.p.DateCreated,
-                      Description = n.pt.Description,
-                      Details = n.pt.Details,
-                      LanguageId = n.pt.LanguageId,
-                      OriginalPrice = n.p.OriginalPrice,
-                      Price = n.p.Price,
-                      SeoAlias = n.pt.SeoAlias,
-                      SeoDescription = n.pt.SeoDescription,
-                      SeoTitle = n.pt.SeoTitle,
-                      Stock = n.p.Stock,
-                      ViewCount = n.p.ViewCount
-                  }
-            ).ToListAsync();
-            return data;
-        }
-
-        public async Task<PagedResult<ProductViewModel>> GetAllByCategoryId(PublicProductPagingRequest request)
-        {
-            var query = from p in _context.Products
-                        join pt in _context.ProductTranslations on p.Id equals pt.ProductId
-                        join pic in _context.ProductInCategories on p.Id equals pic.ProductId
-                        join c in _context.Categories on pic.CategoryId equals c.Id
-                        where pt.LanguageId == request.LanguageId
                         select new { p, pt, pic };
 
 

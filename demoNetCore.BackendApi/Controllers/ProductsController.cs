@@ -11,30 +11,22 @@ namespace demoNetCore.BackendApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ProductController : ControllerBase
+    public class ProductsController : ControllerBase
     {
         private readonly IPublicProductService _publicProductService;
         private readonly IManageProductService _manageProductService;
 
-        public ProductController(IPublicProductService publicProductService,IManageProductService manageProductService)
+        public ProductsController(IPublicProductService publicProductService,IManageProductService manageProductService)
         {
             _publicProductService = publicProductService;
             _manageProductService = manageProductService;
         }
 
-        //http://localhost:port/product
-        [HttpGet("{languageId}")]
-        public async Task<IActionResult> Get(string languageId)
-        {
-            var products = await _publicProductService.GetAll(languageId);
-            return Ok(products);
-        }
-
         //http://localhost:port/product/public-paging
-        [HttpGet("public-paging/{languageId}")]
-        public async Task<IActionResult> Get([FromQuery]PublicProductPagingRequest request)
+        [HttpGet("{languageId}")]
+        public async Task<IActionResult> GetAllPaging(string languageId,[FromQuery]PublicProductPagingRequest request)
         {
-            var products = await _publicProductService.GetAllByCategoryId(request);
+            var products = await _publicProductService.GetAllByCategoryId(languageId, request);
             return Ok(products);
         }
 
