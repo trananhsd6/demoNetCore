@@ -1,4 +1,5 @@
-﻿using demoNetCore.ViewModel.Catalog.Products;
+﻿using demoNetCore.ViewModel.Catalog.ProductImages;
+using demoNetCore.ViewModel.Catalog.Products;
 using demoNetCore.ViewModel.Common;
 using Microsoft.AspNetCore.Http;
 using System;
@@ -18,9 +19,10 @@ namespace demoNetCore.Application.Catolog.Products
         Task<ProductViewModel> GetById(int productId,string languageId);
         Task AddViewCount(int productId);
         Task<PagedResult<ProductViewModel>> GetAllPaging(ManageProductPagingRequest request);
-        Task<int> AddImages(int productId, List<IFormFile> files);
+        Task<int> AddImage(int productId, ProductImageCreateRequest request);
         Task<int> RemoveImages(int imageId);
-        Task<int> UpdateImages(int imageId, string caption,bool isDefault);
-        Task<List<ProductImageViewMode>> GetListImage(int productId);
+        Task<int> UpdateImage( int imageId, ProductImageUpdateRequest request);
+        Task<List<ProductImageViewMode>> GetListImages(int productId);
+        Task<ProductImageViewMode> GetImageById(int imageId);
     }
 }

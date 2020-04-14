@@ -17,6 +17,10 @@
     <ProjectReference Include="..\demoNetCore.ViewModel\demoNetCore.ViewModel.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\user-content\" />
+  </ItemGroup>
+
 
 
 </Project>
