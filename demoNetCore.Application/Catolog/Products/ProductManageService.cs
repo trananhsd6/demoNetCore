@@ -2,6 +2,7 @@
 using demoNetCore.Data.EF;
 using demoNetCore.Data.Entities;
 using demoNetCore.Utilities.Exceptions;
+using demoNetCore.ViewModel.Catalog.ProductImages;
 using demoNetCore.ViewModel.Catalog.Products;
 using demoNetCore.ViewModel.Common;
 using Microsoft.AspNetCore.Http;
@@ -20,15 +21,31 @@ namespace demoNetCore.Application.Catolog.Products
     {
         private readonly EShopDbContext _context;
         private readonly IStorageService _storageService;
-        public ProductManageService(EShopDbContext context,IStorageService storageService)
+        public ProductManageService(EShopDbContext context, IStorageService storageService)
         {
             _context = context;
             _storageService = storageService;
         }
 
-        public Task<int> AddImages(int productId, List<IFormFile> files)
+        public async Task<int> AddImage(int productId, ProductImageCreateRequest request)
         {
-            throw new NotImplementedException();
+            var productImage = new ProductImage()
+            {
+                Caption = request.Caption,
+                DateCreated = DateTime.Now,
+                IsDefault = request.IsDefault,
+                ProductId = productId,
+                SortOrder = request.SortOrder
+            };
+            if (request.ImageFile != null)
+            {
+                productImage.ImagePath = await this.SaveFile(request.ImageFile);
+                productImage.FileSize = request.ImageFile.Length;
+            }
+
+            _context.ProductImages.Add(productImage);
+            await _context.SaveChangesAsync();
+            return productImage.Id;
         }
 
         public async Task AddViewCount(int productId)
@@ -90,12 +107,12 @@ namespace demoNetCore.Application.Catolog.Products
             {
                 throw new demoNetCoreException($"Cannot find a product:{productID}");
             }
-            var images = _context.ProductImages.Where(i=>i.ProductId == productID);
+            var images = _context.ProductImages.Where(i => i.ProductId == productID);
             foreach (var item in images)
             {
                 await _storageService.DeleteFileAsync(item.ImagePath);
             }
-           
+
             _context.Products.Remove(product);
             return await _context.SaveChangesAsync();
         }
@@ -171,28 +188,54 @@ namespace demoNetCore.Application.Catolog.Products
             return productViewModel;
         }
 
-        public async Task<List<ProductImageViewMode>> GetListImage(int productId)
+        public async Task<ProductImageViewMode> GetImageById(int imageId)
         {
-            var images = _context.ProductImages.Where(i => i.ProductId == productId).Select(n=> new ProductImageViewMode
-            { 
-                Id = n.Id,
-                FilePath = n.ImagePath,
-                FileSizes = n.FileSize,
-                isDefault = n.IsDefault
-            });
-            return await images.ToListAsync();
+            var image = await _context.ProductImages.FindAsync(imageId);
+            if (image == null)
+            {
+                throw new demoNetCoreException($"Cannot find an image with {imageId}");
+            }
+            var viewModel = new ProductImageViewMode()
+            {
+                Caption = image.Caption,
+                DateCreated = image.DateCreated,
+                FileSize = image.FileSize,
+                ImagePath = image.ImagePath,
+                Id = image.Id,
+                IsDefault = image.IsDefault,
+                ProductId = image.ProductId,
+                SortOrder = image.SortOrder
+            };
+            return viewModel;
+        }
+
+        public async Task<List<ProductImageViewMode>> GetListImages(int productId)
+        {
+            return await _context.ProductImages.Where(x => x.ProductId == productId)
+                .Select(i => new ProductImageViewMode()
+                {
+                    Caption = i.Caption,
+                    DateCreated = i.DateCreated,
+                    FileSize = i.FileSize,
+                    ImagePath = i.ImagePath,
+                    Id = i.Id,
+                    IsDefault = i.IsDefault,
+                    ProductId = i.ProductId,
+                    SortOrder = i.SortOrder
+                }).ToListAsync();
         }
 
         public async Task<int> RemoveImages(int imageId)
         {
-            var thumbnailImage = await _context.ProductImages.FindAsync(imageId);
-            if (thumbnailImage == null)
+            var productImage = await _context.ProductImages.FindAsync(imageId);
+            if (productImage == null)
             {
-                throw new demoNetCoreException($"Cannot find a ThubnailImages:{imageId}");
+                throw new demoNetCoreException($"Cannot find an image with {imageId}");
             }
-            _context.Remove(thumbnailImage);
 
+            _context.ProductImages.Remove(productImage);
             return await _context.SaveChangesAsync();
+
         }
 
         public async Task<int> Update(ProductUpdateRequest request)
@@ -212,7 +255,7 @@ namespace demoNetCore.Application.Catolog.Products
             //Update Image
             if (request.ThumbnailImage != null)
             {
-                var thumbnailImage = await _context.ProductImages.FirstOrDefaultAsync(i=>i.IsDefault == true && i.ProductId == request.Id);
+                var thumbnailImage = await _context.ProductImages.FirstOrDefaultAsync(i => i.IsDefault == true && i.ProductId == request.Id);
                 if (thumbnailImage != null)
                 {
                     thumbnailImage.FileSize = request.ThumbnailImage.Length;
@@ -223,9 +266,22 @@ namespace demoNetCore.Application.Catolog.Products
             return await _context.SaveChangesAsync();
         }
 
-        public Task<int> UpdateImages(int imageId, string caption, bool isDefault)
+        public async Task<int> UpdateImage(int imageId, ProductImageUpdateRequest request)
         {
-            throw new NotImplementedException();
+            var productImage = await _context.ProductImages.FindAsync(imageId);
+            if (productImage == null)
+            {
+                throw new demoNetCoreException($"Cannot find an image with {imageId}");
+            }
+
+            if (request.ImageFile != null)
+            {
+                productImage.ImagePath = await this.SaveFile(request.ImageFile);
+                productImage.FileSize = request.ImageFile.Length;
+            }
+
+            _context.ProductImages.Update(productImage);
+            return await _context.SaveChangesAsync();
         }
 
         public async Task<bool> UpdatePrice(int productId, decimal newPrice)
@@ -250,7 +306,7 @@ namespace demoNetCore.Application.Catolog.Products
         {
             var originalFilename = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
             var filename = $"{Guid.NewGuid()}{Path.GetExtension(originalFilename)}";
-            await _storageService.SaveFileAsync(file.OpenReadStream(),filename);
+            await _storageService.SaveFileAsync(file.OpenReadStream(), filename);
             return filename;
         }
     }
