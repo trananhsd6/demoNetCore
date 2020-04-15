@@ -4,11 +4,14 @@ using System.Linq;
 using System.Threading.Tasks;
 using demoNetCore.Application.Catolog.Products;
 using demoNetCore.Application.Common;
+using demoNetCore.Application.System.Users;
 using demoNetCore.Data.EF;
+using demoNetCore.Data.Entities;
 using demoNetCore.Utilities.Constants;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -31,12 +34,18 @@ namespace demoNetCore.BackendApi
         {
             services.AddDbContext<EShopDbContext>(options =>
                 options.UseMySql(Configuration.GetConnectionString(SystemConstants.MainConnectionString)));
-
+            services.AddIdentity<AppUser, AppRole>()
+                .AddEntityFrameworkStores<EShopDbContext>()
+                .AddDefaultTokenProviders();
             //Declare DI
             services.AddTransient<IStorageService, FileStorageService>();
 
             services.AddTransient<IPublicProductService, PublicProductService>();
             services.AddTransient<IManageProductService, ProductManageService>();
+            services.AddTransient<UserManager<AppUser>, UserManager<AppUser>>();
+            services.AddTransient<SignInManager<AppUser>, SignInManager<AppUser>>();
+            services.AddTransient<RoleManager<AppRole>, RoleManager<AppRole>>();
+            services.AddTransient<IUserService, UserService>();
 
             services.AddControllersWithViews();
 
