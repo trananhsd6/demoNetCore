@@ -8,6 +8,8 @@ using demoNetCore.Application.System.Users;
 using demoNetCore.Data.EF;
 using demoNetCore.Data.Entities;
 using demoNetCore.Utilities.Constants;
+using demoNetCore.ViewModel.System.Users;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -49,7 +51,8 @@ namespace demoNetCore.BackendApi
             services.AddTransient<RoleManager<AppRole>, RoleManager<AppRole>>();
             services.AddTransient<IUserService, UserService>();
 
-            services.AddControllers();
+            services.AddControllers()
+                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<LoginRequestValidator>());
 
             services.AddSwaggerGen(c =>
             {
